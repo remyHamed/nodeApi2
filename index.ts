@@ -10,34 +10,23 @@ toto("data/sample.txt", function (err:Error | null, data :Buffer) {// prend deux
     console.log("read complet \n" + str);
 });
 
-console.log("read start" );
-
-function writeMarks(studentM:studentMarks[]) {
-    const lines = studentM.map(function (studentMarks: studentMarks) {
-        return studentMarks.name + ":" + studentMarks.mark;
-    })
-    const str = "nom;note\n" + lines.join("\n");
-    console.log(str);
-    writeFile('data/marks.csv', str, function (err:Error | null){
-        if(err){
-            console.log(err);
-            return;
-        }
-        console.log("notes sur myges");
-    })
-};
-
 function writeAverag() {
 
-    const str = toto("data/marks.csv",function (err:Error | null, data :Buffer) {
+    let str = toto("data/marks.csv",function (err:Error | null, data :Buffer) {
         if(err || !data) {
             console.error(err);
             return;
         }
         const str = data.toString();
-        console.log(" w read complet " + str);
+        const lines = str.split('\n');
+        let sum = 0;
+        for (let i = 1; i < lines.length; i++ ) {
+            const line = lines[i].split(":")
+            const mark = parseInt(line[1]);
+            sum += mark;
+        }
+        console.log("res" + sum/(lines.length - 1));
     });
-    console.log("w rest writaverage " + str);
 };
 
 /*writeMarks([
